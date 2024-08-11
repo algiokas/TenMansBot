@@ -1,0 +1,4 @@
+### Requirements without specified version ###
+discord.py
+python-dotenv
+numpy
