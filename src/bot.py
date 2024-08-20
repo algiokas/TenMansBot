@@ -9,6 +9,8 @@ class TenMansBot(commands.Bot):
         self.launch_time = datetime.datetime.now(datetime.UTC)
 
     async def on_ready(self):
+        if (self.user == None):
+            return 'failed to log in'
         print('Logged in as')
         print(self.user.name)
         print(self.user.id)
@@ -18,11 +20,17 @@ class TenMansBot(commands.Bot):
         return f"Bot started at: {self.launch_time.strftime('%F %T')} UTC."
     
     def get_server_info(self, ctx: commands.Context) -> str:
-        return f'Server ID: {ctx.guild.id}\n Server Name: {ctx.guild.name}'
+        if (ctx.guild is not None):
+            return f'Server ID: {ctx.guild.id}\n Server Name: {ctx.guild.name}'
+        return 'server not available'
+        
     
     async def list_channels(self, ctx: commands.Context):
-        for c in ctx.guild.channels:
-            await ctx.send(f'Channel: {c.name} - ID: {c.id}')
+        if (ctx.guild is not None):
+            for c in ctx.guild.channels:
+                await ctx.send(f'Channel: {c.name} - ID: {c.id}')
+        await ctx.send('channel list not available')
+
 
     async def list_users_in_channel(self, ctx, channelName):
         channel = next((x for x in ctx.guild.channels if x.name == channelName), None)
@@ -37,6 +45,9 @@ class TenMansBot(commands.Bot):
             await ctx.send(f'Channel "{channelName}" not found')
 
     async def create_teams(self, ctx: commands.Context, channelName):
+        if (ctx.guild == None):
+            await ctx.send('unable to fetch server info, aborting')
+            return
         channel = next((x for x in ctx.guild.channels if x.name == channelName), None)
         if channel is not None:
             if not channel.members:

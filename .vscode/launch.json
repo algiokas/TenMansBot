@@ -4,12 +4,25 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
+
         {
-            "name": "Python Debugger: Current File",
+            "name": "Debug Main",
             "type": "debugpy",
             "request": "launch",
             "program": "${workspaceFolder}/main.py",
-            "console": "integratedTerminal"
+            "console": "integratedTerminal",
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}"
+            }
+        },
+        {
+            "name": "Run Main",
+            "type": "node-terminal",
+            "request": "launch",
+            "command": "py -3 -m main.py",
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}"
+            }
         }
     ]
 }
