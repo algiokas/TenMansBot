@@ -1,12 +1,16 @@
 import datetime
-from src.player import Player
-from src.teamgenerator import TeamGenerator
+from src.db.database import Database
+from game.player import Player
+from game.teamgenerator import TeamGenerator
+from steam.steamProfile import SteamProfile
 from discord.ext import commands
 
 class TenMansBot(commands.Bot):
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
         self.launch_time = datetime.datetime.now(datetime.UTC)
+
+        self.db = Database()
 
     async def on_ready(self):
         if (self.user == None):
@@ -23,14 +27,12 @@ class TenMansBot(commands.Bot):
         if (ctx.guild is not None):
             return f'Server ID: {ctx.guild.id}\n Server Name: {ctx.guild.name}'
         return 'server not available'
-        
     
     async def list_channels(self, ctx: commands.Context):
         if (ctx.guild is not None):
             for c in ctx.guild.channels:
                 await ctx.send(f'Channel: {c.name} - ID: {c.id}')
         await ctx.send('channel list not available')
-
 
     async def list_users_in_channel(self, ctx, channelName):
         channel = next((x for x in ctx.guild.channels if x.name == channelName), None)
@@ -67,6 +69,7 @@ class TenMansBot(commands.Bot):
         else:
             await ctx.send(f'Channel "{channelName}" not found')
 
-
-
-
+    async def register_player(self, ctx: commands.Context, steam_profile_path: str):
+        if steam_profile_path is not None:
+            profile = SteamProfile(steam_profile_path)
+            print(profile.miniprofile)

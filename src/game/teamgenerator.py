@@ -1,11 +1,17 @@
-from src.player import Player
-from src.team import Team
+from game.player import Player
+from game.team import Team
 
 class TeamGenerator:
     def __init__(self, playerList: list[Player]):
         self.players = playerList
+        self.matchups_generated = ()
 
     def generate_even_teams(self) -> tuple[Team]:
+        if self.matchups_generated is None or len(self.matchups_generated) < 1:
+            return self.naive_generate_even_teams()
+            
+
+    def naive_generate_even_teams(self) -> tuple[Team]:
         if len(self.players) % 2 > 0:
             print(f'Even Number of players required')
             return
@@ -40,7 +46,7 @@ class TeamGenerator:
 
         return (team1, team2)
         
-
+    def 
 
 
 

@@ -1,2 +1,2 @@
-from html.parser import HTMLParser
+from bs4 import BeautifulSoup
 

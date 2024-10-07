@@ -1,10 +1,21 @@
-from src.player import Player
+from game.player import Player
+from sqlalchemy import false
 
 class Team:
     def __init__(self, name: str, size: int):
         self.name = name
         self.size = size
         self.players = []
+
+    def __eq__(self, other):
+        if self.size != other.size:
+            return False
+        if len(self.players) != len(other.players):
+            return False
+        for player in self.players:
+            if player not in other.players:
+                return False
+        return True       
 
     def is_full(self) -> bool:
         return self.size == len(self.players)
